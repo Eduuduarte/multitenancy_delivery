@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# This is a multitenancy project.
+
+<p>The mode of operation that software is work only instances to one or multiple applications operate.</p>
 
 ## Getting Started
 

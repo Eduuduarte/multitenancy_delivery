@@ -1,3 +1,4 @@
+import { Banner } from '../../components/Banner';
 import { SearchInput } from '../../components/SearchInput';
 import styles from '../../styles/Home.module.css';
 
@@ -30,7 +31,12 @@ const Home = () => {
             onSearch={handleSearch}
           />
         </div>
+
+        
       </header>
+
+      <Banner />
+
     </div>
   );
 }

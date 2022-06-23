@@ -11,10 +11,11 @@
 
 ## Introdunce
 
+### Create project in next
 ```bash
-# Create project in next
 npx create-next-app --typescript
+```
 
-
+```bash
 
 ```

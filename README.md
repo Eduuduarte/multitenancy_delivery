@@ -13,9 +13,44 @@
 
 ### Create project in next
 ```bash
-npx create-next-app --typescript
+    npx create-next-app --typescript
 ```
 
 ```bash
 
 ```
+
+
+
+## The Project
+
+### Use Swiper React Components
+
+#### Install
+```bash
+    npm i swiper
+```
+
+##### Typescript
+
+~~~typescript
+    import { Swiper, SwiperSlide } from 'swiper/react';
+
+    <Swiper
+            slidesPerView={1}
+            loop={true}
+            autoplay={{
+                delay: 1000,
+                disableOnInteraction: false
+              }}
+              modules={[Autoplay]}
+            className={styles.swiper}
+            >
+            <SwiperSlide className={styles.slide}><img src="/tmp/banner1.png" alt=''/></SwiperSlide>
+            <SwiperSlide className={styles.slide}><img src="/tmp/banner2.png" alt=''/></SwiperSlide>
+    </Swiper>
+~~~
+
+
+
+ 

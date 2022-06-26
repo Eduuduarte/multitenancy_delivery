@@ -20,7 +20,7 @@ export const useApi = () => ({
                 return {
                     name: 'D10Pizza',
                     mainColor: '#0000FF',
-                    secondColor: '#00FF00'
+                    secondColor: '#FF0000'
                 }
             break;
             default: return false;

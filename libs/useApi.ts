@@ -8,7 +8,7 @@ export const useApi = () => ({
 
     getTenant: (tenantSlug: string): boolean | getTenantResponse => {
         switch(tenantSlug) {
-            case 'D10Burger':
+            case 'd10burguer':
                 return {
                     name: 'D10Burger',
                     mainColor: '#FF0000',
@@ -16,7 +16,7 @@ export const useApi = () => ({
                 }
             break;
 
-            case 'D10Pizza':
+            case 'd10pizza':
                 return {
                     name: 'D10Pizza',
                     mainColor: '#0000FF',

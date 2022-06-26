@@ -17,8 +17,21 @@
 ```
 
 ### Dependencies
+
+#### SVG webpack
 ```bash
-    
+    npm i -D @svgr/webpack
+```
+##### Config in next.config.js the webpack
+```bash
+    webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ['@svgr/webpack']
+    })
+    return config;
+  }
 ```
 
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Styles from './Styles.module.css';
+import SerarchIcon from './searchIcon.svg';
 
 type props = {
     mainColor: string;
@@ -23,7 +24,9 @@ export const SearchInput = ({ mainColor, onSearch }: props) => {
             <div 
             className={Styles.button}
             onClick={() => onSearch(SearchValue)}
-            ></div>
+            >
+                <SerarchIcon color={mainColor}/>
+            </div>
             <input
              type="text"
              className={Styles.input}

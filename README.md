@@ -16,8 +16,9 @@
     npx create-next-app --typescript
 ```
 
+### Dependencies
 ```bash
-
+    
 ```
 
 
@@ -35,6 +36,7 @@
 
 ~~~typescript
     import { Swiper, SwiperSlide } from 'swiper/react';
+    import { Autoplay } from 'swiper';
 
     <Swiper
             slidesPerView={1}

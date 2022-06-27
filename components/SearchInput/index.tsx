@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import Styles from './Styles.module.css';
 import SerarchIcon from './searchIcon.svg';
+import { useAppContext } from '../../context/AppContext';
 
 type props = {
-    mainColor: string;
     onSearch: (SearchValue: string) => void;
 }
 
-export const SearchInput = ({ mainColor, onSearch }: props) => {
+export const SearchInput = ({ onSearch }: props) => {
+    const { tenant } = useAppContext();
+
     const [focused, setFocused] = useState(false);
     const [SearchValue, setSearchValue] = useState('');
 
@@ -19,13 +21,13 @@ export const SearchInput = ({ mainColor, onSearch }: props) => {
 
     return (
         <div className={Styles.container}
-             style = {{ borderColor: focused ? mainColor : '#FFFFFF'}}
+             style = {{ borderColor: focused ? tenant?.mainColor : '#FFFFFF'}}
              >
             <div 
             className={Styles.button}
             onClick={() => onSearch(SearchValue)}
             >
-                <SerarchIcon color={mainColor}/>
+                <SerarchIcon color={tenant?.mainColor}/>
             </div>
             <input
              type="text"

@@ -34,8 +34,6 @@
   }
 ```
 
-
-
 ## The Project
 
 ### Use Swiper React Components
@@ -65,7 +63,3 @@
             <SwiperSlide className={styles.slide}><img src="/tmp/banner2.png" alt=''/></SwiperSlide>
     </Swiper>
 ~~~
-
-
-
- 

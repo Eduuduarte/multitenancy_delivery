@@ -18,7 +18,7 @@
     color: rgba(27, 27, 27, 0.8);
     text-align: center;
     margin: auto;
-    width: 223px;
+    width: 220px;
     padding-bottom: 40px;
     border-bottom: 1.5px solid #000;
     position: relative;
@@ -43,18 +43,10 @@
     text-align: center;
     margin: auto;
     color: #000;
-    width: fit-content;
-    position: relative;
-    padding-bottom: 62px;
-    border-bottom: 1.5px solid #000;
 }
 
 .forgetArea a {
     font-weight: 600;
     text-decoration: none;
     color: #000;
-}
-
-.signupArea{
-    margin-top: 62px;
 }

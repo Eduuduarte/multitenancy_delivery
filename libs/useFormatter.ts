@@ -5,5 +5,11 @@ export const useFormatter = () => ({
             style: 'currency',
             currency: 'BRL'
         })
+    },
+    formatQuantity: (qt: number, mindigits: number) => {
+        if(qt.toString().length >= mindigits) return qt.toString();
+
+        const remain = mindigits - qt.toString().length;
+        return `${'0'.repeat(remain)}${qt}`;
     }
-})
+});

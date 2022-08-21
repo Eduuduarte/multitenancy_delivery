@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { Button } from '../../../components/Button';
 import { Header } from '../../../components/Header';
+import { Quantity } from '../../../components/Quantity';
 import { useAppContext } from '../../../context/AppContext';
 import { useApi } from '../../../libs/useApi';
 import { useFormatter } from '../../../libs/useFormatter';
@@ -12,6 +13,8 @@ import { Tenant } from '../../../types/tenant';
 
 const Product = (data: Props) => {
   const { tenant, setTenant } = useAppContext();
+  const [ qtCount, setQtCount ] = useState(1);
+
   useEffect(() =>{
     setTenant(data.tenant);
   }, []);
@@ -19,6 +22,10 @@ const Product = (data: Props) => {
   const formatter = useFormatter();
 
   const handleAddToCart = () => {}
+
+  const handleUpdateQt = (newCount: number) => {
+    setQtCount(newCount);
+  }
 
   return (
     <div className={styles.container}>
@@ -51,7 +58,14 @@ const Product = (data: Props) => {
 
       <div className={styles.qtText}>Quantidade</div>
       <div className={styles.area}>
-        <div className={styles.areaLeft}>...</div>
+        <div className={styles.areaLeft}>
+          <Quantity 
+            color={data.tenant.mainColor}
+            count={qtCount}
+            onUpdateCount={handleUpdateQt}
+            min={1}
+          />
+        </div>
         <div 
           className={styles.areaRight}
           style={{ color: data.tenant.mainColor}}

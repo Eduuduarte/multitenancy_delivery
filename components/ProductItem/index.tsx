@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useAppContext } from '../../context/AppContext';
+import { useAppContext } from '../../context/app';
 import { useFormatter } from '../../libs/useFormatter';
 import { Product } from '../../types/Products';
 import styles from './styles.module.css';

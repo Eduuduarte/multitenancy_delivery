@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { AppContextProvider } from '../context/AppContext'
+import { Provider as AppContextProvider } from '../context/app';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return(

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Styles from './Styles.module.css';
 import SerarchIcon from './searchIcon.svg';
-import { useAppContext } from '../../context/AppContext';
+import { useAppContext } from '../../context/app';
 
 type props = {
     onSearch: (SearchValue: string) => void;

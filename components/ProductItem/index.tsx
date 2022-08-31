@@ -14,7 +14,7 @@ export const ProductItem = ({data}: Props) => {
     const formatter = useFormatter();
 
     return (
-        <Link href={`/d7burger/product/${data.id}`}>
+        <Link href={`d10burguer/product/${data.id}`}>
             <a className={styles.container}>
                 <div className={styles.head} style={{background: tenant?.secondColor}}></div>
                 <div className={styles.info}>

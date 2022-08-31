@@ -41,6 +41,7 @@
 #### Install
 ```bash
     npm i swiper
+    npm i cookies-next
 ```
 
 ##### Typescript

@@ -46,7 +46,7 @@ export const Quantity = ({color, count, onUpdateCount, min, max, small}: Props) 
             <div 
                 className={styles.qt}
                 style={{ fontSize: small ? 16 : 18 }}
-            >{formatter.formatQuantity(count, 3)}</div>
+            >{formatter.formatQuantity(count, 2)}</div>
 
             <div 
                 className={styles.button}

@@ -1,5 +1,7 @@
+import { getCookie, hasCookie, setCookie } from 'cookies-next';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Button } from '../../../components/Button';
 import { Header } from '../../../components/Header';
@@ -8,6 +10,7 @@ import { useAppContext } from '../../../context/app';
 import { useApi } from '../../../libs/useApi';
 import { useFormatter } from '../../../libs/useFormatter';
 import styles from '../../../styles/Product-id.module.css';
+import { CartCoookie } from '../../../types/CartCookie';
 import { Product } from '../../../types/Products';
 import { Tenant } from '../../../types/tenant';
 
@@ -19,9 +22,38 @@ const Product = (data: Props) => {
     setTenant(data.tenant);
   }, []);
 
+  const router = useRouter();
+
   const formatter = useFormatter();
 
-  const handleAddToCart = () => {}
+  const handleAddToCart = () => {
+    let cart: CartCoookie[] = [];
+
+    // create or get existing cart
+    if(hasCookie('cart')) {
+      const cartCookie = getCookie('cart');
+      const cartJson: CartCoookie[] = JSON.parse(cartCookie as string);
+      for(let i in cartJson) {
+        if(cartJson[i].qt && cartJson[i].id){
+          cart.push(cartJson[i]);
+        }
+      }
+    }
+
+    // search product in cart
+    const cartIndex = cart.findIndex(item => item.id === data.product.id);
+    if(cartIndex > -1) {
+      cart[cartIndex].qt += qtCount;
+    } else {
+      cart.push({ id: data.product.id, qt: qtCount});
+    }
+
+    // setting cookie
+    setCookie('cart', JSON.stringify(cart));
+
+    // going to cart
+    router.push(`/${data.tenant.slug}/cart`);
+  }
 
   const handleUpdateQt = (newCount: number) => {
     setQtCount(newCount);
@@ -103,7 +135,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   // Get Product
-  const product = await api.getProduct(id as string);
+  const product = await api.getProduct(parseInt(id as string));
   return {
     props: {
         tenant,

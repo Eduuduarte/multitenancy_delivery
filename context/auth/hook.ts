@@ -1,7 +1,6 @@
 import { setCookie } from "cookies-next";
 import { useContext } from "react"
 import { AppContext } from "."
-import { Tenant } from "../../types/tenant";
 import { User } from "../../types/User";
 import { Actions } from "./types";
 

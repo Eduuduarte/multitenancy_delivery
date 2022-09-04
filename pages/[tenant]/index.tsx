@@ -12,10 +12,11 @@ import styles from '../../styles/Home.module.css';
 import { Product } from '../../types/Products';
 import { Tenant } from '../../types/tenant';
 import { User } from '../../types/User';
+import NoItemsIcon from '../../public/assets/noitems.svg';
 
 const Home = (data: Props) => {
-  const { setToken, setUser } = useAuthContext();
   const { tenant, setTenant } = useAppContext();
+  const { setToken, setUser } = useAuthContext();
 
   useEffect(() => {
     setTenant(data.tenant);
@@ -26,9 +27,20 @@ const Home = (data: Props) => {
   const [products, setProducts] = useState<Product[]>(data.products);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const handleSearch = (SearchValue: string) => {
-    console.log(`Você está buscando por: ${SearchValue}`);
-  }
+  // Search
+  const [filterProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [searchText, setSearchText] = useState('');
+  const handleSearch = (value: string) => setSearchText(value);
+  useEffect(() => {
+    let newFilteredProducts: Product[] = [];
+    for (let product of data.products) {
+      if (product.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+        newFilteredProducts.push(product);
+      }
+    }
+    setFilteredProducts(newFilteredProducts);
+
+  }, [searchText])
 
   return (
     <div
@@ -68,17 +80,48 @@ const Home = (data: Props) => {
 
       </header>
 
-      <Banner />
+      {searchText &&
+        <>
+          <div className={styles.searchText}>
+            Procurando por: <strong>{searchText}</strong>
+          </div>
 
-      <div className={styles.grid}>
+          {filterProducts.length > 0 &&
+            <div className={styles.grid}>
 
-        {products.map((item, index) => (
-          <ProductItem
-            key={index}
-            data={item}
-          />
-        ))}
-      </div>
+              {filterProducts.map((item, index) => (
+                <ProductItem
+                  key={index}
+                  data={item}
+                />
+              ))}
+            </div>
+          }
+
+          {filterProducts.length === 0 && 
+            <div className={styles.noProducts}>
+              <NoItemsIcon color="#E0E0E0"/>
+              <div className={styles.noProductsText}>Ops! Não há itens com este nome</div>
+            </div>
+          }
+        </>
+      }
+
+      {!searchText &&
+        <>
+          <Banner />
+
+          <div className={styles.grid}>
+
+            {products.map((item, index) => (
+              <ProductItem
+                key={index}
+                data={item}
+              />
+            ))}
+          </div>
+        </>
+      }
     </div>
   );
 }

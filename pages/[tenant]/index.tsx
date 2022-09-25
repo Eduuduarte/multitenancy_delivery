@@ -1,4 +1,4 @@
-import { getCookie } from 'cookies-next';
+import { getCookie, hasCookie, setCookie } from 'cookies-next';
 import { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
 import { Banner } from '../../components/Banner';
@@ -20,7 +20,7 @@ const Home = (data: Props) => {
 
   useEffect(() => {
     setTenant(data.tenant);
-    setToken(data.token);
+    if (data.token != "") setToken(data.token);
     if (data.user) setUser(data.user);
   }, []);
 
@@ -145,9 +145,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { redirect: { destination: '/', permanent: false } }
   }
 
+  let token = getCookie('token', context);
+
+  // if(hasCookie('token')){
+  //   token = getCookie('token', context) as string;
+  // }
+
   // Get Logged User
   // const token = context.req.cookies.token
-  const token = getCookie('token', context);
   const user = await api.authorizeToken(token as string);
 
   // Get Products

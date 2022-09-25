@@ -13,14 +13,14 @@ import { Header } from '../../components/Header';
 import { InputField } from '../../components/InputField';
 import { Button } from '../../components/Button';
 import { useFormatter } from '../../libs/useFormatter';
+import { CartItem } from '../../types/CartItem';
+import { useRouter } from 'next/router';
 
 const Cart = (data: Props) => {
   const { tenant, setTenant } = useAppContext();
   const { setToken, setUser } = useAuthContext();
 
-  const [shippingInput, setShippingInput] = useState("");
-  const [shippingPrice, setShippingPrice] = useState(0);
-  const [subTotal, setSubtotal] = useState(0);
+
 
   useEffect(() => {
     setTenant(data.tenant);
@@ -29,13 +29,34 @@ const Cart = (data: Props) => {
   }, []);
 
   const formatter = useFormatter();
+  const router = useRouter();
 
+  // Product Control
+  const [cart, setCart] = useState<CartItem[]>(data.cart);
+
+  // Shipping
+  const [shippingInput, setShippingInput] = useState("");
+  const [shippingAddress, setShippingAddress] = useState("");
+  const [shippingPrice, setShippingPrice] = useState(0);
+  const [shippingTime, setShippingTime] = useState(0);
   const handleClickCalc = () => {
-
+    setShippingAddress('Rua bla bla bla')
+    setShippingPrice(9.50);
+    setShippingTime(20)
   }
+  // Resume
+  const [subTotal, setSubtotal] = useState(0);
+  useEffect(() => {
+    let sub = 0;
+    for (let i in cart) {
+      sub += cart[i].product.price * cart[i].qt;
+    }
 
+    setSubtotal(sub);
+
+  }, [cart]);
   const handleFinish = () => {
-
+    router.push(`${data.tenant.slug}/checkout`);
   }
 
   return (
@@ -50,7 +71,7 @@ const Cart = (data: Props) => {
         title="Sacola"
       />
 
-      <div className={styles.productsQuantity}>x itens</div>
+      <div className={styles.productsQuantity}>{cart.length} {cart.length === 1 ? 'item' : 'itens'}</div>
 
       <div className={styles.productList}>
 
@@ -71,18 +92,23 @@ const Cart = (data: Props) => {
             onClick={handleClickCalc}
           />
         </div>
-        <div className={styles.shippingInfo}>
-          <div className={styles.shippingAddress}>rua blab bla bla</div>
-          <div className={styles.shippingTime}>
-            <div className={styles.shippingTimeText}>Receba em até 20 minutos.</div>
-            <div
-              className={styles.shippingPrice}
-              style={{ color: data.tenant.mainColor }}
-            >
-              {formatter.formtPrice(shippingPrice)}
+
+        {shippingTime > 0 &&
+          <div className={styles.shippingInfo}>
+            <div className={styles.shippingAddress}>{shippingAddress}</div>
+            <div className={styles.shippingTime}>
+              <div className={styles.shippingTimeText}>Receba em até {shippingTime} minutos.</div>
+              <div
+                className={styles.shippingPrice}
+                style={{ color: data.tenant.mainColor }}
+              >
+                {formatter.formtPrice(shippingPrice)}
+              </div>
             </div>
           </div>
-        </div>
+        }
+
+
       </div>
       <div className={styles.resumeArea}>
         <div className={styles.resumeItem}>
@@ -98,7 +124,7 @@ const Cart = (data: Props) => {
           <div className={styles.resumeLeft}>Total</div>
           <div
             className={styles.resumeRightBig}
-            style={{ color: data.tenant. mainColor }}
+            style={{ color: data.tenant.mainColor }}
           >{formatter.formtPrice(shippingPrice + subTotal)}</div>
         </div>
         <div className={styles.resumeButton}>
@@ -120,9 +146,9 @@ export default Cart;
 
 type Props = {
   tenant: Tenant;
-  products: Product[];
   token: string;
   user: User | null;
+  cart: CartItem[];
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -135,25 +161,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { redirect: { destination: '/', permanent: false } }
   }
 
-  let token = ""
+  // let token = ""
 
-  if (hasCookie('token')) {
-    token = getCookie('token', context) as string;
-  }
+  // if (hasCookie('token')) {
+  //   token = getCookie('token', context) as string;
+  // }
 
   // Get Logged User
-  // const token = context.req.cookies.token
+  const token = getCookie('token', context);
   const user = await api.authorizeToken(token as string);
 
-  // Get Products
-  const products = await api.getAllProducts();
+  // Get Cart Products
+  const cartCookie = getCookie('cart', context);
+  const cart = await api.getCartProducts(cartCookie as string);
 
   return {
     props: {
       tenant,
-      products,
       user,
-      token
+      token,
+      cart
     }
   }
 }

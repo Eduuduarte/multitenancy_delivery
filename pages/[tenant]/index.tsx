@@ -147,9 +147,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   let token = getCookie('token', context);
 
-  // if(hasCookie('token')){
-  //   token = getCookie('token', context) as string;
-  // }
+  if(hasCookie('token')){
+    token = getCookie('token', context) as string;
+  } else {
+    token="";
+  }
 
   // Get Logged User
   // const token = context.req.cookies.token

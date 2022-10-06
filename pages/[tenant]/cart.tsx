@@ -15,6 +15,8 @@ import { Button } from '../../components/Button';
 import { useFormatter } from '../../libs/useFormatter';
 import { CartItem } from '../../types/CartItem';
 import { useRouter } from 'next/router';
+import CartProductItem from '../../components/CartProductItem';
+import { CartCoookie } from '../../types/CartCookie';
 
 const Cart = (data: Props) => {
   const { tenant, setTenant } = useAppContext();
@@ -33,6 +35,26 @@ const Cart = (data: Props) => {
 
   // Product Control
   const [cart, setCart] = useState<CartItem[]>(data.cart);
+  const handleCartChange = (newCount: number, id: Number) => {
+    const tmpCart: CartItem[] = [...cart];
+    const cartIndex = tmpCart.findIndex(item => item.product.id === id);
+    if(newCount > 0) {
+      tmpCart[cartIndex].qt = newCount;
+    } else {
+      delete tmpCart[cartIndex];
+    }
+    let newCart: CartItem[] = tmpCart.filter(item => item);
+    setCart(newCart);
+    // Update Cookie
+    let cartCookie: CartCoookie[] = [];
+    for(let i in newCart) {
+      cartCookie.push({
+        id: newCart[i].product.id,
+        qt: newCart[i].qt
+      });
+    }
+    setCookie('cart', JSON.stringify(cartCookie));
+  }
 
   // Shipping
   const [shippingInput, setShippingInput] = useState("");
@@ -59,6 +81,7 @@ const Cart = (data: Props) => {
     router.push(`${data.tenant.slug}/checkout`);
   }
 
+
   return (
     <div className={styles.container}>
       <Head>
@@ -74,7 +97,15 @@ const Cart = (data: Props) => {
       <div className={styles.productsQuantity}>{cart.length} {cart.length === 1 ? 'item' : 'itens'}</div>
 
       <div className={styles.productList}>
-
+        {cart.map((cartItem, index) => (
+          <CartProductItem 
+            key={index}
+            color={data.tenant.mainColor}
+            quantity={cartItem.qt}
+            product={cartItem.product}
+            onChange={handleCartChange}
+          />
+        ))}
       </div>
 
       <div className={styles.shippingArea}>

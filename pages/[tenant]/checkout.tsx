@@ -82,6 +82,10 @@ const Checkout = (data: Props) => {
     router.push(`${data.tenant.slug}/checkout`);
   }
 
+  const handleChangeAddress = () => {
+    console.log('Indo para tela de endereço!')
+  }
+
 
   return (
     <div className={styles.container}>
@@ -102,24 +106,58 @@ const Checkout = (data: Props) => {
           <div className={styles.infoBody}>
             <ButtonWithIcon
               color={data.tenant.mainColor}
-              leftIcon={"location"}
               rightIcon={"rightArrow"}
-              value={"Rua Bla Bla Bla, 111"}
-              onClick={() => {}}
+              leftIcon={"location"}
+              value={"Rua Bla Bla Bla, 111 Rua Bla Bla Bla, 111 Rua Bla Bla Bla, 111"}
+              onClick={handleChangeAddress}
             />
           </div>
         </div>
         <div className={styles.infoArea}>
           <div className={styles.infoTitle}>Tipo de pagamento</div>
-          <div className={styles.infoBody}>...</div>
+          <div className={styles.infoBody}>
+            <div className={styles.paymentTypes}>
+              <div className={styles.paymentBtn}>
+                <ButtonWithIcon 
+                  color={data.tenant.mainColor}
+                  leftIcon='money'
+                  value="Dinheiro"
+                  onClick={() => {}}
+                  fill
+                />
+              </div>
+              <div className={styles.paymentBtn}>
+              <ButtonWithIcon 
+                  color={data.tenant.mainColor}
+                  leftIcon='card'
+                  value="Cartão"
+                  onClick={() => {}}
+                />
+              </div>
+            </div>
+          </div>
         </div>
         <div className={styles.infoArea}>
           <div className={styles.infoTitle}>Troco</div>
-          <div className={styles.infoBody}>...</div>
+          <div className={styles.infoBody}>
+            <InputField 
+              color={data.tenant.mainColor}
+              placeholder="Quanto você tem em dinheiro"
+              value={""}
+              onChange={newValue => {}}
+            />
+          </div>
         </div>
         <div className={styles.infoArea}>
           <div className={styles.infoTitle}>Cupom de desconto</div>
-          <div className={styles.infoBody}>...</div>
+          <div className={styles.infoBody}>
+            <ButtonWithIcon 
+              color={data.tenant.mainColor}
+              leftIcon="cupom"
+              rightIcon="checked"
+              value="Teste123"
+            />
+          </div>
         </div>
 
       </div>
@@ -135,6 +173,7 @@ const Checkout = (data: Props) => {
             quantity={cartItem.qt}
             product={cartItem.product}
             onChange={handleCartChange}
+            noEdit
           />
         ))}
       </div>

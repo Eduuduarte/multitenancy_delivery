@@ -21,7 +21,7 @@ import { ButtonWithIcon } from '../../components/ButtonWidthIcon';
 import { Address } from '../../types/Address';
 
 const Checkout = (data: Props) => {
-  const { tenant, setTenant } = useAppContext();
+  const { tenant, setTenant, shippingAddress, shippingPrice } = useAppContext();
   const { setToken, setUser } = useAuthContext();
 
 
@@ -40,20 +40,8 @@ const Checkout = (data: Props) => {
 
 
   // Shipping
-  const [shippingPrice, setShippingPrice] = useState(0);
-  const [shippingAddress, setShippingAddress] = useState<Address>();
   const handleChangeAddress = () => {
     router.push(`/${data.tenant.slug}/myaddresses`);
-    // setShippingAddress({
-    //   id: 1,
-    //   cep: "99999-999",
-    //   street: "Rua das Flores",
-    //   number: '321',
-    //   neighborhood: 'Jardins',
-    //   city: 'São Paulo',
-    //   state: 'Sp'
-    // });
-    // setShippingPrice(9.50);
   }
 
   // Payments

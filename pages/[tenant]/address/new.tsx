@@ -9,12 +9,9 @@ import { Tenant } from '../../../types/tenant';
 import { User } from '../../../types/User';
 import Head from 'next/head';
 import { Header } from '../../../components/Header';
-import { useFormatter } from '../../../libs/useFormatter';
-import { CartItem } from '../../../types/CartItem';
 import { useRouter } from 'next/router';
 import { Button } from '../../../components/Button';
 import { Address } from '../../../types/Address';
-import { AddressItem } from '../../../components/AddressItem';
 import { InputField } from '../../../components/InputField';
 
 
@@ -30,6 +27,8 @@ const newAddress = (data: Props) => {
 
   const router = useRouter();
 
+  const [errorFields, setErrorFields] = useState<string[]>([]);
+
   const [ addressCep, setAddressCep ] = useState<string>('');
   const [ addressStreet, setAddressStreet ] = useState<string>('');
   const [ addressNumber, setAddressNumber ] = useState<string>('');
@@ -38,8 +37,44 @@ const newAddress = (data: Props) => {
   const [ addressState, setAddressState ] = useState<string>('');
   const [ addressComplement, setAddressComplement ] = useState<string>('');
 
+  const verifyAddress = () => {
+    let newErrorFields: string[] = [];
+    let approved = true;
+
+    if(addressCep.replaceAll(/[^0-9]/g, '').length !== 8) {
+      newErrorFields.push('cep');
+      approved = false;
+    }
+
+    if(addressStreet.length <= 2) {
+      newErrorFields.push('street');
+      approved = false;
+    }
+
+    if(addressNeighborhood.length <= 2) {
+      newErrorFields.push('neighborhood');
+      approved = false;
+    }
+
+    if(addressCity.length <= 2) {
+      newErrorFields.push('city');
+      approved=false;
+    }
+    
+    if(addressState.length !== 2) {
+      newErrorFields.push('state');
+      approved = false;
+    }
+
+
+    setErrorFields(newErrorFields);
+    return approved;
+  }
+
   const handleNewAddress = () => {
-    router.push(`/${data.tenant.slug}/newaddress/new`);
+    if(verifyAddress()) {
+
+    }
   }
 
   return (
@@ -63,6 +98,7 @@ const newAddress = (data: Props) => {
                     placeholder="Digite um CEP"
                     value={addressCep}
                     onChange={value => setAddressCep(value)}
+                    warning={errorFields.includes('cep')}
                 />
             </div>
         </div>
@@ -75,13 +111,14 @@ const newAddress = (data: Props) => {
                     placeholder="Digite uma rua"
                     value={addressStreet}
                     onChange={value => setAddressStreet(value)}
+                    warning={errorFields.includes('street')}
                 />
             </div>
             <div className={styles.column}>
                 <div className={styles.label}>Número</div>
                 <InputField 
                     color={data.tenant.mainColor}
-                    placeholder="Digite um númeroa"
+                    placeholder="Digite um número"
                     value={addressNumber}
                     onChange={value => setAddressNumber(value)}
                 />
@@ -96,6 +133,7 @@ const newAddress = (data: Props) => {
                     placeholder="Digite um bairro"
                     value={addressNeighborhood}
                     onChange={value => setAddressNeighborhood(value)}
+                    warning={errorFields.includes('neighborhood')}
                 />
             </div>
         </div>
@@ -108,6 +146,7 @@ const newAddress = (data: Props) => {
                     placeholder="Digite uma cidade"
                     value={addressCity}
                     onChange={value => setAddressCity(value)}
+                    warning={errorFields.includes('city')}
                 />
             </div>
         </div>
@@ -120,6 +159,7 @@ const newAddress = (data: Props) => {
                     placeholder="Digite um estado"
                     value={addressState}
                     onChange={value => setAddressState(value)}
+                    warning={errorFields.includes('state')}
                 />
             </div>
         </div>
@@ -129,7 +169,7 @@ const newAddress = (data: Props) => {
                 <div className={styles.label}>Complemento</div>
                 <InputField 
                     color={data.tenant.mainColor}
-                    placeholder="Digite um estado"
+                    placeholder="Digite um complemento"
                     value={addressComplement}
                     onChange={value => setAddressComplement(value)}
                 />

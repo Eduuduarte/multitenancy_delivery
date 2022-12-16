@@ -14,7 +14,6 @@ import { Button } from '../../../components/Button';
 import { Address } from '../../../types/Address';
 import { InputField } from '../../../components/InputField';
 
-
 const newAddress = (data: Props) => {
   const { tenant, setTenant, setShippingAddress, setShippingPrice } = useAppContext();
   const { setToken, setUser } = useAuthContext();
@@ -26,6 +25,7 @@ const newAddress = (data: Props) => {
   }, []);
 
   const router = useRouter();
+  const api = useApi(data.tenant.slug);
 
   const [errorFields, setErrorFields] = useState<string[]>([]);
 
@@ -71,9 +71,24 @@ const newAddress = (data: Props) => {
     return approved;
   }
 
-  const handleNewAddress = () => {
+  const handleNewAddress = async () => {
     if(verifyAddress()) {
-
+      let address: Address = {
+        id: 0,
+        cep: addressCep,
+        street: addressStreet,
+        number: addressNumber,
+        neighborhood: addressNeighborhood,
+        city: addressCity,
+        state: addressState,
+        complement: addressComplement
+      }
+      let newAddress = await api.addUserAddress(address);
+      if(newAddress.id > 0) {
+        router.push(`/${data.tenant.slug}/myaddresses`)
+      } else {
+        alert('Ocorreu um erro! Tente mais tarde.')
+      }
     }
   }
 
@@ -84,7 +99,7 @@ const newAddress = (data: Props) => {
       </Head>
 
       <Header
-        backHref={`/${data.tenant.slug}/checkout`}
+        backHref={`/${data.tenant.slug}/myaddresses`}
         color={data.tenant.mainColor}
         title="Novo Endereço"
       />

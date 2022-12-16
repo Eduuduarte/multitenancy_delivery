@@ -104,6 +104,10 @@ export const useApi = (tenantSlug: string) => ({
         return addresses;
     },
 
+    addUserAddress: async (address: Address) => {
+        return {...address, id: 9};
+    },
+
     getShippingPrice: async (address: Address) => {
         return 9.16;
     }

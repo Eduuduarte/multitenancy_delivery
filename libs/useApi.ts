@@ -89,9 +89,9 @@ export const useApi = (tenantSlug: string) => ({
     getUserAddresses: async (email: string) => {
         const addresses: Address[] = [];
 
-        for(let i=0; i<4; i++){
+        for (let i = 0; i < 4; i++) {
             addresses.push({
-                id: i+ 1,
+                id: i + 1,
                 street: 'Rua das Flores',
                 number: `${i + 1}00`,
                 cep: '999999999',
@@ -104,8 +104,25 @@ export const useApi = (tenantSlug: string) => ({
         return addresses;
     },
 
+    getUserAddress: async (addressid: number) => {
+        let address: Address = {
+            id: addressid,
+            street: 'Rua das Flores',
+            number: `${addressid}00`,
+            cep: '999999999',
+            city: 'São Paulo',
+            neighborhood: 'Jardins',
+            state: 'SP'
+        }
+        return address;
+    },
+
+    editUserAddress: async (newAddressData: Address) => {
+        return true;
+    },
+
     addUserAddress: async (address: Address) => {
-        return {...address, id: 9};
+        return { ...address, id: 9 };
     },
 
     getShippingPrice: async (address: Address) => {

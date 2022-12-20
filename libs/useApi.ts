@@ -121,6 +121,10 @@ export const useApi = (tenantSlug: string) => ({
         return true;
     },
 
+    deleteUserAddress: async (addressId: number) => {
+        return true;
+    },
+
     addUserAddress: async (address: Address) => {
         return { ...address, id: 9 };
     },

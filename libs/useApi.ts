@@ -35,7 +35,7 @@ const TEMPORARYorder: Order = {
     products: [
         { product: {...TEMPORARYoneProduct, id: 1}, qt: 1},
         { product: {...TEMPORARYoneProduct, id: 2}, qt: 2},
-        { product: {...TEMPORARYoneProduct, id: 3}, qt: 5},
+        { product: {...TEMPORARYoneProduct, id: 3}, qt: 1},
     ],
     subtotal: 204,
     total: 198.84
@@ -168,6 +168,10 @@ export const useApi = (tenantSlug: string) => ({
         cupom: string,
         cart: CartItem[]
     ) => {
+        return TEMPORARYorder;
+    },
+
+    getOrder: async (orderid: number) => {
         return TEMPORARYorder;
     }
 });

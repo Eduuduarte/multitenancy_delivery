@@ -19,6 +19,7 @@ import CartProductItem from '../../components/CartProductItem';
 import { CartCoookie } from '../../types/CartCookie';
 import { ButtonWithIcon } from '../../components/ButtonWidthIcon';
 import { Address } from '../../types/Address';
+import { ApiError } from 'next/dist/server/api-utils';
 
 const Checkout = (data: Props) => {
   const { tenant, setTenant, shippingAddress, shippingPrice } = useAppContext();
@@ -34,6 +35,7 @@ const Checkout = (data: Props) => {
 
   const formatter = useFormatter();
   const router = useRouter();
+  const api = useApi(data.tenant.slug);
 
   // Product Control
   const [cart, setCart] = useState<CartItem[]>(data.cart);
@@ -70,8 +72,21 @@ const Checkout = (data: Props) => {
     setSubtotal(sub);
 
   }, [cart]);
-  const handleFinish = () => {
-
+  const handleFinish = async () => {
+    if(shippingAddress) {
+     const order = await api.setOrder(
+      shippingAddress,
+      paymentType,
+      paymentChange,
+      cupom,
+      data.cart
+     ); 
+     if(order) {
+      router.push(`/${data.tenant.slug}/order/${order.id}`);
+     } else {
+      alert('Ocorreu um erro! Tente mais tarde!');
+     }
+    }
   }
 
 

@@ -1,5 +1,6 @@
 import { Address } from "../types/Address";
 import { CartItem } from "../types/CartItem";
+import { Order } from "../types/Order";
 import { Product } from "../types/Products";
 import { Tenant } from "../types/tenant";
 import { User } from "../types/User";
@@ -11,6 +12,33 @@ const TEMPORARYoneProduct: Product = {
     name: 'Texas Burge',
     price: 25.50,
     description: "2 Blends de carne de 150g, Queijo Cheddar, Bacon Caramelizado, Salada, Molho da casa, Pão brioche artesanal"
+}
+
+const TEMPORARYorder: Order = {
+    id: 123,
+    status: 'preparing',
+    orderDate: '2022-12-04',
+    userid: '123',
+    shippingAddress: {
+        id: 2,
+        street: 'Rua das flores',
+        number: '200',
+        cep: '58433001',
+        city: 'São paulo',
+        neighborhood: 'Jardins',
+        state: 'SP'
+    },
+    shippingPrice: 9.14,
+    paymentType: 'card',
+    cupom: 'ABC',
+    cupomDiscount: 14.3,
+    products: [
+        { product: {...TEMPORARYoneProduct, id: 1}, qt: 1},
+        { product: {...TEMPORARYoneProduct, id: 2}, qt: 2},
+        { product: {...TEMPORARYoneProduct, id: 3}, qt: 5},
+    ],
+    subtotal: 204,
+    total: 198.84
 }
 
 
@@ -131,5 +159,15 @@ export const useApi = (tenantSlug: string) => ({
 
     getShippingPrice: async (address: Address) => {
         return 9.16;
+    },
+
+    setOrder: async (
+        address: Address,
+        paymentType: 'money' | 'card',
+        paymentChange: number,
+        cupom: string,
+        cart: CartItem[]
+    ) => {
+        return TEMPORARYorder;
     }
 });

@@ -1,4 +1,4 @@
-import { getCookie, hasCookie, setCookie } from 'cookies-next';
+import { getCookie } from 'cookies-next';
 import { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
 import { useAppContext } from '../../context/app';
@@ -10,7 +10,6 @@ import { User } from '../../types/User';
 import Head from 'next/head';
 import { Header } from '../../components/Header';
 import { useFormatter } from '../../libs/useFormatter';
-import { CartItem } from '../../types/CartItem';
 import { useRouter } from 'next/router';
 import { Button } from '../../components/Button';
 import { Address } from '../../types/Address';

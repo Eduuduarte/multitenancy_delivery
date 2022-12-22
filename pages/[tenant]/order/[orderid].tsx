@@ -26,8 +26,6 @@ const OrderID = (data: Props) => {
     const { tenant, setTenant } = useAppContext();
     const { setToken, setUser } = useAuthContext();
 
-
-
     useEffect(() => {
         setTenant(data.tenant);
         if (data.token != "") setToken(data.token);
@@ -37,6 +35,30 @@ const OrderID = (data: Props) => {
     const formatter = useFormatter();
     const router = useRouter();
     const api = useApi(data.tenant.slug);
+
+    const orderStatusList = {
+        preparing: {
+            label: 'Preparando',
+            longLabel: 'Preparando o seu pedido...',
+            backgroundColor: '#FEFAE6',
+            fontColor: '#D4BC34',
+            pct: 25
+        },
+        sent: {
+            label: 'Enviado',
+            longLabel: 'Enviamos o seu pedido!',
+            backgroundColor: '#F1F3F8',
+            fontColor: '#758CBD',
+            pct: 75
+        },
+        delivered: {
+            label: 'Entregue',
+            longLabel: 'Seu pedido foi entregue',
+            backgroundColor: '#F1F8F6',
+            fontColor: '#6AB70A',
+            pct: 100
+        }
+    }
 
     return (
         <div className={styles.container}>
@@ -49,6 +71,37 @@ const OrderID = (data: Props) => {
                 color={data.tenant.mainColor}
                 title={`Pedido ${data.order.id}`}
             />
+
+            <div className={styles.orderInfoArea}>
+                <div 
+                className={styles.orderInfoStatus} 
+                style={{ 
+                    backgroundColor: orderStatusList[data.order.status].backgroundColor,
+                    color: orderStatusList[data.order.status].fontColor 
+                }}
+                >
+                    {orderStatusList[data.order.status].label}
+                </div>
+                <div className={styles.orderInfoQt}>
+                    {data.order.products.length} {data.order.products.length === 1 ? 'item' : 'itens'}
+                </div>
+                <div className={styles.orderDate}>
+                    {formatter.formatDate(data.order.orderDate)}
+                </div>
+            </div>
+
+            <div className={styles.productList}>
+                {data.order.products.map((cartItem, index) => (
+                    <CartProductItem
+                        key={index}
+                        color={data.tenant.mainColor}
+                        quantity={cartItem.qt}
+                        product={cartItem.product}
+                        onChange={() => { }}
+                        noEdit
+                    />
+                ))}
+            </div>
 
             <div className={styles.infoGroup}>
 
@@ -118,21 +171,6 @@ const OrderID = (data: Props) => {
                         </div>
                     </div>
                 }
-            </div>
-
-            <div className={styles.productsQuantity}>{data.order.products.length} {data.order.products.length === 1 ? 'item' : 'itens'}</div>
-
-            <div className={styles.productList}>
-                {data.order.products.map((cartItem, index) => (
-                    <CartProductItem
-                        key={index}
-                        color={data.tenant.mainColor}
-                        quantity={cartItem.qt}
-                        product={cartItem.product}
-                        onChange={() => { }}
-                        noEdit
-                    />
-                ))}
             </div>
 
             <div className={styles.resumeArea}>

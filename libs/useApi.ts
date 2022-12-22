@@ -16,7 +16,7 @@ const TEMPORARYoneProduct: Product = {
 
 const TEMPORARYorder: Order = {
     id: 123,
-    status: 'preparing',
+    status: 'sent',
     orderDate: '2022-12-04',
     userid: '123',
     shippingAddress: {

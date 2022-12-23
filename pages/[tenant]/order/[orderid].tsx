@@ -36,6 +36,14 @@ const OrderID = (data: Props) => {
     const router = useRouter();
     const api = useApi(data.tenant.slug);
 
+    useEffect(() => {
+        if(data.order.status !== 'delivered') {
+            setTimeout(() => {
+                router.reload();
+            }, 60000)
+        }
+    }, [])
+
     const orderStatusList = {
         preparing: {
             label: 'Preparando',
@@ -72,13 +80,38 @@ const OrderID = (data: Props) => {
                 title={`Pedido ${data.order.id}`}
             />
 
+            {data.order.status !== 'delivered' &&
+                <div
+                    className={styles.statusArea}
+                    style={{ backgroundColor: orderStatusList[data.order.status].backgroundColor }}
+                >
+                    <div
+                        className={styles.statusLongLabel}
+                        style={{ color: orderStatusList[data.order.status].fontColor }}
+                    >
+                        {orderStatusList[data.order.status].longLabel}
+                    </div>
+                    <div className={styles.statusPct}>
+                        <div 
+                        className={styles.statusPctBar}
+                        style={{
+                            width: `${orderStatusList[data.order.status].pct}%`,
+                            backgroundColor: orderStatusList[data.order.status].fontColor
+                        }}
+                        ></div>
+                    </div>
+                    <div className={styles.statusMsg}>Aguardando mudança de status...</div>
+                </div>
+            }
+
+
             <div className={styles.orderInfoArea}>
-                <div 
-                className={styles.orderInfoStatus} 
-                style={{ 
-                    backgroundColor: orderStatusList[data.order.status].backgroundColor,
-                    color: orderStatusList[data.order.status].fontColor 
-                }}
+                <div
+                    className={styles.orderInfoStatus}
+                    style={{
+                        backgroundColor: orderStatusList[data.order.status].backgroundColor,
+                        color: orderStatusList[data.order.status].fontColor
+                    }}
                 >
                     {orderStatusList[data.order.status].label}
                 </div>

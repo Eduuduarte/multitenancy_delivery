@@ -64,3 +64,15 @@
             <SwiperSlide className={styles.slide}><img src="/tmp/banner2.png" alt=''/></SwiperSlide>
     </Swiper>
 ~~~
+
+### Formatter currency
+
+~~~javascript
+function formtPrice: (price: number) => {
+        return price.toLocaleString('pt-br', {
+            minimumFractionDigits: 2,
+            style: 'currency',
+            currency: 'BRL'
+        })
+    }
+~~~

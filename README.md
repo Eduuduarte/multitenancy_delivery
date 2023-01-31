@@ -76,3 +76,24 @@ function formtPrice: (price: number) => {
         })
     }
 ~~~
+
+### GetServerSideProps to render in server
+
+~~~javascript
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { tenant: tenantSlug } = context.query;
+  const api = useApi(tenantSlug as string);
+
+  // Get Tanant
+  const tenant = await api.getTenant();
+  if (!tenant) {
+    return { redirect: { destination: '/', permanent: false } }
+  }
+
+  return {
+    props: {
+      tenant,
+    }
+  }
+}
+~~~

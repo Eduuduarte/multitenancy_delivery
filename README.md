@@ -77,6 +77,17 @@ function formtPrice: (price: number) => {
     }
 ~~~
 
+### Formater Date
+
+~~~javascript
+function formatDate: (date: string) => {
+        let currentDate = new Date(`${date} 00:00:00`);
+
+        return new Intl.DateTimeFormat('pt-BR').format(currentDate);
+    }
+
+~~~
+
 ### GetServerSideProps to render in server
 
 ~~~javascript
